@@ -32,12 +32,10 @@
         .input-field:focus { outline: none; border-color: #0d9488; ring: 2px; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1); }
         .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
         
-        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
 
-        /* Print Styles */
         @media print {
             body { background: white; }
             #sidebar, #login-screen, .no-print { display: none !important; }
@@ -90,37 +88,31 @@
                     </button>
                 </div>
             </form>
-            <p class="text-center text-xs text-slate-400 mt-6">v3.0.4 - Cloud Edition (Secure)</p>
+            <p class="text-center text-xs text-slate-400 mt-6">v3.1.0 - Stable Edition</p>
         </div>
     </div>
 
     <!-- SIDEBAR -->
     <aside id="sidebar" class="w-64 bg-slate-900 text-white flex-col hidden md:flex transition-all z-20">
-        <!-- Logo -->
         <div class="h-16 flex items-center px-6 border-b border-slate-800">
             <i class="fa-solid fa-chart-pie text-brand-500 mr-3 text-xl"></i>
             <span class="font-bold text-lg tracking-tight">Smart Pricing</span>
         </div>
 
-        <!-- Navigation -->
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
             <p class="text-xs font-bold text-slate-500 uppercase px-2 mb-2">Módulos</p>
-            
             <button onclick="switchTab('calculator')" id="nav-calc" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium bg-brand-600 text-white rounded-lg transition-colors">
                 <i class="fa-solid fa-calculator w-5"></i> Calculadora
             </button>
-            
             <button onclick="switchTab('products')" id="nav-prod" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-colors">
                 <i class="fa-solid fa-boxes-stacked w-5"></i> Meus Produtos
             </button>
 
             <div class="pt-6 mt-6 border-t border-slate-800">
                 <p class="text-xs font-bold text-slate-500 uppercase px-2 mb-2">Dados & Backup</p>
-                
                 <button id="btnBackup" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-400 hover:text-brand-400 hover:bg-slate-800 rounded-lg">
                     <i class="fa-solid fa-download w-5"></i> Backup (JSON)
                 </button>
-                
                 <label for="fileImport" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-400 hover:text-brand-400 hover:bg-slate-800 rounded-lg cursor-pointer">
                     <i class="fa-solid fa-upload w-5"></i> Importar
                     <input type="file" id="fileImport" accept=".json" class="hidden">
@@ -128,7 +120,6 @@
             </div>
         </nav>
 
-        <!-- User Footer -->
         <div class="p-4 border-t border-slate-800 bg-slate-950">
             <div class="flex items-center gap-3 mb-3">
                 <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
@@ -147,14 +138,11 @@
 
     <!-- MAIN CONTENT -->
     <main id="main-content" class="flex-1 h-screen overflow-y-auto bg-slate-50 relative hidden">
-        
-        <!-- Print Header -->
         <div class="print-only-header">
             <h1 class="text-2xl font-bold">Relatório de Custo e Precificação</h1>
             <p class="text-sm text-gray-500">Gerado pelo Sistema Smart Pricing ML</p>
         </div>
 
-        <!-- HEADER MOBILE -->
         <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-10 no-print">
             <div class="flex items-center gap-4">
                 <button class="md:hidden text-slate-500" onclick="document.getElementById('sidebar').classList.toggle('hidden')">
@@ -162,9 +150,7 @@
                 </button>
                 <h2 id="pageTitle" class="text-lg font-semibold text-slate-800">Calculadora de Custos</h2>
             </div>
-            
             <div class="flex items-center gap-3">
-                <!-- Action Buttons for Calculator -->
                 <div id="calc-actions" class="flex gap-2">
                     <button onclick="resetCalculator()" class="px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded border border-slate-200">
                         <i class="fa-solid fa-plus mr-1"></i> Novo
@@ -180,41 +166,22 @@
         </header>
 
         <div class="p-6 max-w-7xl mx-auto space-y-6">
-            
-            <!-- VIEW: CALCULATOR -->
             <div id="view-calculator" class="animate-fade-in space-y-6">
-                <!-- AI Alert Panel -->
                 <div id="aiInsightsPanel" class="hidden"></div>
-
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                    <!-- INPUTS -->
                     <div class="xl:col-span-7 space-y-6">
                         <div class="card p-6 border-l-4 border-brand-500">
                             <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
                                 <i class="fa-solid fa-box text-brand-500"></i> Dados do Produto
                             </h3>
-                            <input type="hidden" id="currentDocId"> <!-- Hidden ID for Editing -->
-                            
+                            <input type="hidden" id="currentDocId">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="input-label">SKU</label>
-                                    <input type="text" id="sku" class="input-field uppercase font-mono" placeholder="EX: CAM-001">
-                                </div>
-                                <div>
-                                    <label class="input-label">Título (Opcional)</label>
-                                    <input type="text" id="productName" class="input-field" placeholder="Nome do produto">
-                                </div>
-                                <div>
-                                    <label class="input-label">Custo (CMV) R$</label>
-                                    <input type="number" id="costPrice" class="input-field" value="35.00" step="0.01">
-                                </div>
-                                <div>
-                                    <label class="input-label">Margem Meta %</label>
-                                    <input type="number" id="margin" class="input-field" value="20.0" step="0.1">
-                                </div>
+                                <div><label class="input-label">SKU</label><input type="text" id="sku" class="input-field uppercase font-mono" placeholder="EX: CAM-001"></div>
+                                <div><label class="input-label">Título (Opcional)</label><input type="text" id="productName" class="input-field" placeholder="Nome do produto"></div>
+                                <div><label class="input-label">Custo (CMV) R$</label><input type="number" id="costPrice" class="input-field" value="35.00" step="0.01"></div>
+                                <div><label class="input-label">Margem Meta %</label><input type="number" id="margin" class="input-field" value="20.0" step="0.1"></div>
                             </div>
                         </div>
-
                         <div class="card p-6">
                             <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
                                 <i class="fa-solid fa-truck-fast text-blue-600"></i> Logística (2025)
@@ -225,70 +192,29 @@
                                 <div><label class="input-label">Comp (cm)</label><input type="number" id="dimL" class="input-field" placeholder="0"></div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="input-label">Peso Físico (kg)</label>
-                                    <input type="number" id="weight" class="input-field" placeholder="0.5" step="0.1">
-                                </div>
+                                <div><label class="input-label">Peso Físico (kg)</label><input type="number" id="weight" class="input-field" placeholder="0.5" step="0.1"></div>
                                 <div class="bg-blue-50 border border-blue-100 rounded p-2 flex flex-col justify-center text-center">
                                     <span class="text-[10px] font-bold text-blue-600 uppercase">Peso IATA</span>
                                     <span id="finalWeightDisplay" class="font-bold text-blue-800 text-lg">0.00 kg</span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div>
-                                    <label class="input-label">Reputação</label>
-                                    <select id="reputation" class="input-field">
-                                        <option value="verde_lider">MercadoLíder</option>
-                                        <option value="verde">Verde</option>
-                                        <option value="amarela">Amarela</option>
-                                        <option value="laranja">Laranja/Vermelha</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="input-label">Frete em < R$79</label>
-                                    <select id="freeShippingLowPrice" class="input-field">
-                                        <option value="nao">Comprador Paga</option>
-                                        <option value="sim">Frete Grátis</option>
-                                    </select>
-                                </div>
+                                <div><label class="input-label">Reputação</label><select id="reputation" class="input-field"><option value="verde_lider">MercadoLíder</option><option value="verde">Verde</option><option value="amarela">Amarela</option><option value="laranja">Laranja/Vermelha</option></select></div>
+                                <div><label class="input-label">Frete em < R$79</label><select id="freeShippingLowPrice" class="input-field"><option value="nao">Comprador Paga</option><option value="sim">Frete Grátis</option></select></div>
                             </div>
                         </div>
-
                          <div class="card p-6">
                             <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
                                 <i class="fa-solid fa-tags text-purple-600"></i> Taxas & Ads
                             </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="input-label">Categoria</label>
-                                    <select id="category" class="input-field">
-                                        <option value="roupas">Roupas (12%/17%)</option>
-                                        <option value="eletronicos">Eletrônicos (11.5%/16.5%)</option>
-                                        <option value="beleza">Beleza (12.5%/17.5%)</option>
-                                        <option value="casa">Casa (11%/16%)</option>
-                                        <option value="outros">Geral (11%/16%)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="input-label">Tipo Anúncio</label>
-                                    <select id="listingType" class="input-field">
-                                        <option value="premium">Premium (Sem Juros)</option>
-                                        <option value="classico">Clássico</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="input-label">Imposto %</label>
-                                    <input type="number" id="taxRate" class="input-field" value="4.0">
-                                </div>
-                                <div>
-                                    <label class="input-label">Ads (ACOS) %</label>
-                                    <input type="number" id="acos" class="input-field" value="5.0">
-                                </div>
+                                <div><label class="input-label">Categoria</label><select id="category" class="input-field"><option value="roupas">Roupas (12%/17%)</option><option value="eletronicos">Eletrônicos (11.5%/16.5%)</option><option value="beleza">Beleza (12.5%/17.5%)</option><option value="casa">Casa (11%/16%)</option><option value="outros">Geral (11%/16%)</option></select></div>
+                                <div><label class="input-label">Tipo Anúncio</label><select id="listingType" class="input-field"><option value="premium">Premium (Sem Juros)</option><option value="classico">Clássico</option></select></div>
+                                <div><label class="input-label">Imposto %</label><input type="number" id="taxRate" class="input-field" value="4.0"></div>
+                                <div><label class="input-label">Ads (ACOS) %</label><input type="number" id="acos" class="input-field" value="5.0"></div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- RESULTS -->
                     <div class="xl:col-span-5 space-y-6">
                         <div class="card bg-slate-900 text-white p-6 border-0 relative overflow-hidden shadow-xl">
                             <div class="relative z-10 text-center">
@@ -297,7 +223,6 @@
                                 <p class="text-sm text-slate-400 mt-2">Lucro Líquido: <span id="summaryProfit" class="text-white font-bold">R$ 0,00</span></p>
                             </div>
                         </div>
-
                         <div class="card p-6">
                             <h4 class="text-xs font-bold text-slate-500 uppercase mb-4 pb-2 border-b">Detalhamento Financeiro</h4>
                             <div class="space-y-2 text-sm">
@@ -316,7 +241,6 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="card p-4 h-64 flex flex-col">
                             <h4 class="text-xs font-bold text-slate-500 uppercase mb-2">Gráfico de Distribuição</h4>
                             <div class="flex-1 relative"><canvas id="costChart"></canvas></div>
@@ -324,8 +248,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- VIEW: PRODUCTS LIST -->
             <div id="view-products" class="hidden animate-fade-in">
                 <div class="card overflow-hidden">
                     <div class="p-4 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -337,7 +259,6 @@
                             Total: <span id="totalProductsCount" class="font-bold text-slate-800">0</span> produtos
                         </div>
                     </div>
-                    
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm text-slate-600">
                             <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500">
@@ -350,34 +271,22 @@
                                 </tr>
                             </thead>
                             <tbody id="productsTableBody" class="divide-y divide-slate-100">
-                                <!-- JS Populated -->
-                                <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center text-slate-400 italic">
-                                        <i class="fa-solid fa-spinner fa-spin mr-2"></i> Carregando produtos...
-                                    </td>
-                                </tr>
+                                <tr><td colspan="5" class="px-6 py-8 text-center text-slate-400 italic"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Carregando produtos...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- MODULE SCRIPTS -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCustomToken, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, getDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-        // --- CONFIGURAÇÃO DE SEGURANÇA E AMBIENTE ---
-        
-        // 1. Verificar configuração do ambiente (Preview/Canvas)
-        const envConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        
-        // 2. Configuração Hardcoded (Fallback do Usuário)
-        const userConfig = {
+        // CONFIG
+        const firebaseConfig = {
             apiKey: "AIzaSyBfsctDhi_AcqU6PTpWO6W4TBeA0tuwjkM",
             authDomain: "gerador-prompt.firebaseapp.com",
             projectId: "gerador-prompt",
@@ -385,14 +294,10 @@
             messagingSenderId: "595983997758",
             appId: "1:595983997758:web:25263e89f476fa7ae1aa6f"
         };
-
-        // 3. Seleção da Configuração Ativa
-        const firebaseConfig = envConfig || userConfig;
         
-        // 4. FIX: Use 'default' as standard appId to match security rules
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default';
+        // --- CONSTANT APP ID MATCHING RULES ---
+        const appId = 'smart-pricing-app';
 
-        // INIT
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -401,20 +306,6 @@
         let productsUnsubscribe = null;
         let allProductsCache = [];
 
-        // --- AUTENTICAÇÃO SEGURA ---
-        const initAuth = async () => {
-             const canUseToken = envConfig && typeof __initial_auth_token !== 'undefined' && __initial_auth_token;
-
-             if (canUseToken) {
-                 try {
-                     await signInWithCustomToken(auth, __initial_auth_token);
-                 } catch (err) {
-                     console.warn("Token auth failed, fallback to manual login:", err);
-                 }
-             }
-        };
-        initAuth();
-
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             const loginScreen = document.getElementById('login-screen');
@@ -422,15 +313,12 @@
             const sidebar = document.getElementById('sidebar');
 
             if (user) {
-                // Logged In
                 loginScreen.classList.add('hidden');
                 mainContent.classList.remove('hidden');
                 if(window.innerWidth >= 768) sidebar.classList.remove('hidden');
                 document.getElementById('userEmailDisplay').textContent = user.email || 'Usuário Anônimo';
-                
-                loadProductsRealtime(); // Start listener
+                loadProductsRealtime();
             } else {
-                // Logged Out
                 loginScreen.classList.remove('hidden');
                 mainContent.classList.add('hidden');
                 sidebar.classList.add('hidden');
@@ -441,21 +329,15 @@
         document.getElementById('btnLogin').addEventListener('click', async () => {
             const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
-            try {
-                await signInWithEmailAndPassword(auth, e, p);
-            } catch (err) {
-                showAuthError("Erro ao entrar: " + err.message);
-            }
+            try { await signInWithEmailAndPassword(auth, e, p); } 
+            catch (err) { showAuthError("Erro ao entrar: " + err.message); }
         });
 
         document.getElementById('btnRegister').addEventListener('click', async () => {
             const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
-            try {
-                await createUserWithEmailAndPassword(auth, e, p);
-            } catch (err) {
-                showAuthError("Erro ao cadastrar: " + err.message);
-            }
+            try { await createUserWithEmailAndPassword(auth, e, p); } 
+            catch (err) { showAuthError("Erro ao cadastrar: " + err.message); }
         });
 
         document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
@@ -466,20 +348,13 @@
             el.classList.remove('hidden');
         }
 
-        // --- FIRESTORE LOGIC ---
-        
-        // SAVE / EDIT
         document.getElementById('btnSave').addEventListener('click', async () => {
-            if(!currentUser) {
-                alert("Você precisa estar logado.");
-                return;
-            }
+            if(!currentUser) { alert("Você precisa estar logado."); return; }
             
             const btn = document.getElementById('btnSave');
             const docId = document.getElementById('currentDocId').value;
             const isEdit = !!docId;
 
-            // Gather Data
             const data = {
                 sku: document.getElementById('sku').value.toUpperCase() || 'SEM-SKU',
                 name: document.getElementById('productName').value,
@@ -506,9 +381,7 @@
             btn.disabled = true;
 
             try {
-                // Log for diagnostics
-                console.log(`Saving to: artifacts/${appId}/users/${currentUser.uid}/products`);
-                
+                // FIXED PATH: smart-pricing-app
                 const colRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'products');
                 
                 if (isEdit) {
@@ -523,12 +396,11 @@
             } catch (e) {
                 console.error("Save Error:", e);
                 if (e.code === 'permission-denied') {
-                    alert("Erro de Permissão: O banco de dados recusou o acesso.\n\nPor favor, faça Logout e entre novamente para renovar suas credenciais.");
+                    alert("Erro de Permissão (Firestore).\nVerifique se você copiou as regras corretamente no Console do Firebase.");
                 } else {
                     alert("Erro ao salvar: " + e.message);
                 }
             } finally {
-                // Determine label based on current state (save or update)
                 const currentId = document.getElementById('currentDocId').value;
                 const label = currentId ? 'Atualizar' : 'Salvar';
                 btn.innerHTML = `<i class="fa-solid fa-save"></i> <span id="btnSaveText">${label}</span>`;
@@ -536,118 +408,83 @@
             }
         });
 
-        // LISTENER REALTIME
         function loadProductsRealtime() {
             if (!currentUser) return;
             
-            // Log for diagnostics
-            console.log(`Listening: artifacts/${appId}/users/${currentUser.uid}/products`);
-
+            // FIXED PATH MATCH
             const q = query(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'products'));
             
             productsUnsubscribe = onSnapshot(q, (snapshot) => {
                 allProductsCache = [];
                 snapshot.forEach(doc => allProductsCache.push({ id: doc.id, ...doc.data() }));
-                
                 renderProductsTable(allProductsCache);
             }, (error) => {
                 console.error("Firestore Listen Error:", error);
                 if (error.code === 'permission-denied') {
-                    const tbody = document.getElementById('productsTableBody');
-                    tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-500 font-bold">Acesso Negado.<br><span class="text-xs font-normal text-slate-500">Sessão expirada. Faça login novamente.</span></td></tr>`;
+                    document.getElementById('productsTableBody').innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-500 font-bold">Acesso Negado (Regras).</td></tr>`;
                 }
             });
         }
 
-        // --- BACKUP & IMPORT ---
         document.getElementById('btnBackup').addEventListener('click', () => {
             if(!allProductsCache.length) return alert("Sem dados para backup.");
-            
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allProductsCache));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "backup_precificacao_" + new Date().toISOString().slice(0,10) + ".json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
+            const node = document.createElement('a');
+            node.setAttribute("href", dataStr);
+            node.setAttribute("download", "backup_precificacao_" + new Date().toISOString().slice(0,10) + ".json");
+            document.body.appendChild(node);
+            node.click();
+            node.remove();
         });
 
         document.getElementById('fileImport').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            
             const reader = new FileReader();
             reader.onload = async (event) => {
                 try {
                     const items = JSON.parse(event.target.result);
                     if(!Array.isArray(items)) throw new Error("Formato inválido");
-                    
-                    const confirmLoad = confirm(`Deseja importar ${items.length} produtos? Isso pode duplicar SKUs existentes.`);
-                    if(!confirmLoad) return;
-
+                    if(!confirm(`Importar ${items.length} produtos?`)) return;
                     const colRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'products');
                     let count = 0;
-                    
                     for(const item of items) {
-                        const { id, ...data } = item; // Remove ID to generate new one or logic to check
+                        const { id, ...data } = item;
                         data.importedAt = new Date().toISOString();
                         await addDoc(colRef, data);
                         count++;
                     }
-                    alert(`${count} produtos importados com sucesso!`);
-                } catch(err) {
-                    alert("Erro na importação: " + err.message);
-                }
+                    alert(`${count} produtos importados!`);
+                } catch(err) { alert("Erro: " + err.message); }
             };
             reader.readAsText(file);
         });
 
-        // --- EXPORT TO WINDOW SCOPE (For HTML onclicks) ---
         window.loadProductIntoCalc = (id) => {
             const product = allProductsCache.find(p => p.id === id);
             if(!product) return;
-
             switchTab('calculator');
-            
-            // Set Hidden ID
             document.getElementById('currentDocId').value = product.id;
             document.getElementById('btnSaveText').textContent = "Atualizar";
-
-            // Set Basic Fields
             document.getElementById('sku').value = product.sku || '';
             document.getElementById('productName').value = product.name || '';
             document.getElementById('costPrice').value = product.costPrice;
             document.getElementById('margin').value = product.margin;
-
-            // Set Inputs
             if(product.inputs) {
-                const map = {
-                    dimH: 'dimH', dimW: 'dimW', dimL: 'dimL', weight: 'weight',
-                    reputation: 'reputation', freeShippingLowPrice: 'freeShippingLowPrice',
-                    category: 'category', listingType: 'listingType', taxRate: 'taxRate', acos: 'acos'
-                };
-                for(let key in map) {
-                    if(product.inputs[key] !== undefined) {
-                        document.getElementById(map[key]).value = product.inputs[key];
-                    }
-                }
+                const map = {dimH:'dimH', dimW:'dimW', dimL:'dimL', weight:'weight', reputation:'reputation', freeShippingLowPrice:'freeShippingLowPrice', category:'category', listingType:'listingType', taxRate:'taxRate', acos:'acos'};
+                for(let key in map) if(product.inputs[key] !== undefined) document.getElementById(map[key]).value = product.inputs[key];
             }
-
-            // Trigger Recalc
             document.getElementById('costPrice').dispatchEvent(new Event('input'));
         };
 
         window.deleteProduct = async (id) => {
-            if(confirm("Tem certeza que deseja excluir este produto?")) {
+            if(confirm("Excluir este produto?")) {
                 await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'products', id));
             }
         };
-
     </script>
 
-    <!-- UI & CALCULATION SCRIPT -->
     <script>
-        // --- NAVIGATION ---
         function switchTab(tab) {
             const calcView = document.getElementById('view-calculator');
             const prodView = document.getElementById('view-products');
@@ -657,23 +494,15 @@
             const calcActions = document.getElementById('calc-actions');
 
             if(tab === 'calculator') {
-                calcView.classList.remove('hidden');
-                prodView.classList.add('hidden');
-                
+                calcView.classList.remove('hidden'); prodView.classList.add('hidden');
                 navCalc.className = "w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium bg-brand-600 text-white rounded-lg transition-colors";
                 navProd.className = "w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-colors";
-                
-                pageTitle.textContent = "Calculadora de Custos";
-                calcActions.classList.remove('hidden');
+                pageTitle.textContent = "Calculadora de Custos"; calcActions.classList.remove('hidden');
             } else {
-                calcView.classList.add('hidden');
-                prodView.classList.remove('hidden');
-                
+                calcView.classList.add('hidden'); prodView.classList.remove('hidden');
                 navProd.className = "w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium bg-brand-600 text-white rounded-lg transition-colors";
                 navCalc.className = "w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-colors";
-                
-                pageTitle.textContent = "Meus Produtos";
-                calcActions.classList.add('hidden');
+                pageTitle.textContent = "Meus Produtos"; calcActions.classList.add('hidden');
             }
         }
 
@@ -684,103 +513,33 @@
             document.getElementById('productName').value = "";
             document.getElementById('costPrice').value = "35.00";
             document.getElementById('margin').value = "20.0";
-            
-            // Trigger Default Calc
             document.getElementById('costPrice').dispatchEvent(new Event('input'));
         }
 
-        // --- RENDER TABLE ---
         function renderProductsTable(products) {
             const tbody = document.getElementById('productsTableBody');
             const searchVal = document.getElementById('searchProduct').value.toLowerCase();
             const countEl = document.getElementById('totalProductsCount');
-            
             tbody.innerHTML = '';
-            
-            const filtered = products.filter(p => 
-                (p.sku && p.sku.toLowerCase().includes(searchVal)) || 
-                (p.name && p.name.toLowerCase().includes(searchVal))
-            );
-            
+            const filtered = products.filter(p => (p.sku && p.sku.toLowerCase().includes(searchVal)) || (p.name && p.name.toLowerCase().includes(searchVal)));
             countEl.textContent = filtered.length;
-
-            if(filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-400">Nenhum produto encontrado.</td></tr>`;
-                return;
-            }
-
+            if(filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-400">Nenhum produto encontrado.</td></tr>`; return; }
             filtered.forEach(p => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition-colors group";
-                tr.innerHTML = `
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            <div class="h-8 w-8 rounded bg-brand-50 text-brand-600 flex items-center justify-center text-xs font-bold mr-3">
-                                ${p.sku.substring(0,2)}
-                            </div>
-                            <div>
-                                <div class="font-medium text-slate-900">${p.sku}</div>
-                                <div class="text-xs text-slate-500">${p.name || 'Sem nome'}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-xs">R$ ${parseFloat(p.costPrice).toFixed(2)}</td>
-                    <td class="px-6 py-4 text-right font-medium text-brand-600">${p.finalPrice}</td>
-                    <td class="px-6 py-4 text-right text-xs">${p.margin}%</td>
-                    <td class="px-6 py-4 text-right">
-                        <button onclick="window.loadProductIntoCalc('${p.id}')" class="text-slate-400 hover:text-brand-600 mx-2 transition-colors" title="Editar">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button onclick="window.deleteProduct('${p.id}')" class="text-slate-400 hover:text-red-500 transition-colors" title="Excluir">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                `;
+                tr.innerHTML = `<td class="px-6 py-4"><div class="flex items-center"><div class="h-8 w-8 rounded bg-brand-50 text-brand-600 flex items-center justify-center text-xs font-bold mr-3">${p.sku.substring(0,2)}</div><div><div class="font-medium text-slate-900">${p.sku}</div><div class="text-xs text-slate-500">${p.name || 'Sem nome'}</div></div></div></td><td class="px-6 py-4 text-xs">R$ ${parseFloat(p.costPrice).toFixed(2)}</td><td class="px-6 py-4 text-right font-medium text-brand-600">${p.finalPrice}</td><td class="px-6 py-4 text-right text-xs">${p.margin}%</td><td class="px-6 py-4 text-right"><button onclick="window.loadProductIntoCalc('${p.id}')" class="text-slate-400 hover:text-brand-600 mx-2 transition-colors"><i class="fa-solid fa-pen"></i></button><button onclick="window.deleteProduct('${p.id}')" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash"></i></button></td>`;
                 tbody.appendChild(tr);
             });
         }
 
-        document.getElementById('searchProduct').addEventListener('input', () => {
-            // Re-render using cache
-            // Since we don't have direct access to cache variable here (module scope issue), 
-            // we rely on the realtime listener to handle logic or simple DOM filter if needed.
-            // For simplicity in this structure, assume the module updates the UI or we dispatch event.
-            // *Hack for single file scope*: We can trigger a refresh if the cache is accessible, 
-            // but the cleanest way in this architecture is to rely on the module scope.
-            // Ideally, render logic should be inside module or expose data globally.
-            // Let's assume the render function is called inside the module listener.
-        });
-        
-        // Fix for Search: Move render logic to module or make cache global. 
-        // We will stick to the module listener updating the table, 
-        // but for search to work instantly, we can add a listener in the module block 
-        // OR simply hide/show rows here. Let's do DOM filtering for simplicity.
         document.getElementById('searchProduct').addEventListener('keyup', function() {
-            const val = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#productsTableBody tr');
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(val) ? '' : 'none';
-            });
+            renderProductsTable(window.allProductsCache || []); 
         });
 
-        // --- PRINT ---
-        function printReport() {
-            window.print();
-        }
+        function printReport() { window.print(); }
 
-        // --- CALCULATION ENGINE (Updated 2025) ---
-        const FLAT_FEES = [
-            { max: 12.50, fee: 0 }, { max: 29.00, fee: 6.25 },
-            { max: 50.00, fee: 6.50 }, { max: 79.00, fee: 6.75 }, { max: Infinity, fee: 0 }
-        ];
-        const CAT_FEES = {
-            roupas: { premium: 0.17, classico: 0.12 },
-            eletronicos: { premium: 0.165, classico: 0.115 },
-            beleza: { premium: 0.175, classico: 0.125 },
-            casa: { premium: 0.16, classico: 0.11 },
-            outros: { premium: 0.16, classico: 0.11 }
-        };
+        const FLAT_FEES = [{ max: 12.50, fee: 0 }, { max: 29.00, fee: 6.25 }, { max: 50.00, fee: 6.50 }, { max: 79.00, fee: 6.75 }, { max: Infinity, fee: 0 }];
+        const CAT_FEES = { roupas: { premium: 0.17, classico: 0.12 }, eletronicos: { premium: 0.165, classico: 0.115 }, beleza: { premium: 0.175, classico: 0.125 }, casa: { premium: 0.16, classico: 0.11 }, outros: { premium: 0.16, classico: 0.11 } };
         const SHIPPING_BASE = 32.90;
         const DISCOUNTS = { verde_lider: 0.6, verde: 0.5, amarela: 0.4, laranja: 0 };
         
@@ -800,33 +559,24 @@
             const rep = document.getElementById('reputation').value;
             const forceFreeShip = document.getElementById('freeShippingLowPrice').value;
 
-            // Volumetric
             const h = val('dimH'), w = val('dimW'), l = val('dimL'), wei = val('weight');
             const vol = (h*w*l)/6000;
             const finalW = Math.max(wei, vol);
             document.getElementById('finalWeightDisplay').textContent = finalW.toFixed(2) + " kg";
 
-            // Iterative Pricing
             let price = 0, oldPrice = -1, i = 0;
             let flat = 0, ship = 0;
             const denom = 1 - margin - feeRate - tax - acos;
 
-            if(denom <= 0) return displayError();
+            if(denom <= 0) return document.getElementById('finalPriceDisplay').textContent = "Erro Margem";
 
             while(Math.abs(price - oldPrice) > 0.01 && i < 20) {
                 oldPrice = price;
-                
-                // Flat Fee Logic
                 flat = 0;
                 for(let t of FLAT_FEES) { if(oldPrice <= t.max) { flat = t.fee; break; } }
                 if(oldPrice >= 79) flat = 0;
-
-                // Shipping Logic
                 ship = 0;
-                if(oldPrice >= 79 || forceFreeShip === 'sim') {
-                    ship = SHIPPING_BASE * (1 - DISCOUNTS[rep]);
-                }
-
+                if(oldPrice >= 79 || forceFreeShip === 'sim') { ship = SHIPPING_BASE * (1 - DISCOUNTS[rep]); }
                 price = (cost + flat + ship) / denom;
                 i++;
                 if(oldPrice === -1) oldPrice = 0;
@@ -838,7 +588,6 @@
             const profit = price - (cost + feeVal + flat + ship + taxVal + adsVal);
             const marginReal = price > 0 ? (profit/price)*100 : 0;
 
-            // UI Updates
             document.getElementById('finalPriceDisplay').textContent = fmt(price);
             document.getElementById('summaryProfit').textContent = fmt(profit);
             document.getElementById('summaryRevenue').textContent = fmt(price);
@@ -855,45 +604,19 @@
             checkInsights(price, profit, cost, ship, flat, feeRate, tax, acos);
         }
 
-        function displayError() {
-            document.getElementById('finalPriceDisplay').textContent = "Erro Margem";
-        }
-
         function updateChart(prof, cost, fee, flat, ship, tax, ads) {
             const ctx = document.getElementById('costChart').getContext('2d');
             const data = [prof, cost, fee, flat, ship, tax, ads].map(v => Math.max(0,v));
-            
-            if(chartInstance) {
-                chartInstance.data.datasets[0].data = data;
-                chartInstance.update();
-            } else {
-                chartInstance = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Lucro', 'Custo', 'Tarifa', 'Fixo', 'Frete', 'Imposto', 'Ads'],
-                        datasets: [{
-                            data: data,
-                            backgroundColor: ['#10b981', '#64748b', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
-                });
-            }
+            if(chartInstance) { chartInstance.data.datasets[0].data = data; chartInstance.update(); } 
+            else { chartInstance = new Chart(ctx, { type: 'doughnut', data: { labels: ['Lucro', 'Custo', 'Tarifa', 'Fixo', 'Frete', 'Imposto', 'Ads'], datasets: [{ data: data, backgroundColor: ['#10b981', '#64748b', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } } }); }
         }
 
         function checkInsights(price, profit, cost, ship, flat, feeRate, tax, acos) {
             const panel = document.getElementById('aiInsightsPanel');
-            // Price Cliff check
             if(price >= 79 && price <= 95) {
                 const altPrice = 78.90;
                 const altProfit = altPrice - (cost + (altPrice*feeRate) + 6.75 + 0 + (altPrice*tax) + (altPrice*acos));
-                
-                if(altProfit > profit) {
-                    panel.classList.remove('hidden');
-                    panel.innerHTML = `<div class="bg-amber-50 text-amber-800 p-3 rounded border border-amber-200 text-sm flex gap-3"><i class="fa-solid fa-triangle-exclamation mt-1"></i><div><strong>Zona de Perigo (Price Cliff)</strong><br>Vender a R$ 78,90 aumenta seu lucro em ${fmt(altProfit - profit)}.</div></div>`;
-                    return;
-                }
+                if(altProfit > profit) { panel.classList.remove('hidden'); panel.innerHTML = `<div class="bg-amber-50 text-amber-800 p-3 rounded border border-amber-200 text-sm flex gap-3"><i class="fa-solid fa-triangle-exclamation mt-1"></i><div><strong>Zona de Perigo (Price Cliff)</strong><br>Vender a R$ 78,90 aumenta seu lucro em ${fmt(altProfit - profit)}.</div></div>`; return; }
             }
             panel.classList.add('hidden');
         }
