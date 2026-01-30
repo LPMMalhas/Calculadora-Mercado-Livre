@@ -90,7 +90,7 @@
                     </button>
                 </div>
             </form>
-            <p class="text-center text-xs text-slate-400 mt-6">v3.0.3 - Cloud Edition (Stable)</p>
+            <p class="text-center text-xs text-slate-400 mt-6">v3.0.4 - Cloud Edition (Secure)</p>
         </div>
     </div>
 
@@ -387,11 +387,10 @@
         };
 
         // 3. Seleção da Configuração Ativa
-        // Se estivermos no ambiente Preview (tem __firebase_config), usamos ele para que o token funcione.
-        // Se não (arquivo exportado), usamos a config do usuário.
         const firebaseConfig = envConfig || userConfig;
         
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'smart-pricing-v3';
+        // 4. FIX: Use 'default' as standard appId to match security rules
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default';
 
         // INIT
         const app = initializeApp(firebaseConfig);
@@ -404,14 +403,11 @@
 
         // --- AUTENTICAÇÃO SEGURA ---
         const initAuth = async () => {
-             // SÓ tentamos usar o token se estivermos usando a config do ambiente.
-             // Se estivermos usando userConfig (hardcoded), o token __initial_auth_token não serve para ele.
              const canUseToken = envConfig && typeof __initial_auth_token !== 'undefined' && __initial_auth_token;
 
              if (canUseToken) {
                  try {
                      await signInWithCustomToken(auth, __initial_auth_token);
-                     console.log("Authenticated via custom token");
                  } catch (err) {
                      console.warn("Token auth failed, fallback to manual login:", err);
                  }
@@ -474,7 +470,10 @@
         
         // SAVE / EDIT
         document.getElementById('btnSave').addEventListener('click', async () => {
-            if(!currentUser) return;
+            if(!currentUser) {
+                alert("Você precisa estar logado.");
+                return;
+            }
             
             const btn = document.getElementById('btnSave');
             const docId = document.getElementById('currentDocId').value;
@@ -507,6 +506,9 @@
             btn.disabled = true;
 
             try {
+                // Log for diagnostics
+                console.log(`Saving to: artifacts/${appId}/users/${currentUser.uid}/products`);
+                
                 const colRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'products');
                 
                 if (isEdit) {
@@ -519,8 +521,12 @@
                     alert("Produto salvo com sucesso!");
                 }
             } catch (e) {
-                console.error(e);
-                alert("Erro ao salvar: " + e.message);
+                console.error("Save Error:", e);
+                if (e.code === 'permission-denied') {
+                    alert("Erro de Permissão: O banco de dados recusou o acesso.\n\nPor favor, faça Logout e entre novamente para renovar suas credenciais.");
+                } else {
+                    alert("Erro ao salvar: " + e.message);
+                }
             } finally {
                 // Determine label based on current state (save or update)
                 const currentId = document.getElementById('currentDocId').value;
@@ -533,7 +539,10 @@
         // LISTENER REALTIME
         function loadProductsRealtime() {
             if (!currentUser) return;
-            // Use environment AppID
+            
+            // Log for diagnostics
+            console.log(`Listening: artifacts/${appId}/users/${currentUser.uid}/products`);
+
             const q = query(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'products'));
             
             productsUnsubscribe = onSnapshot(q, (snapshot) => {
@@ -545,7 +554,7 @@
                 console.error("Firestore Listen Error:", error);
                 if (error.code === 'permission-denied') {
                     const tbody = document.getElementById('productsTableBody');
-                    tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-500 font-bold">Acesso Negado.<br><span class="text-xs font-normal text-slate-500">Tente recarregar a página para atualizar sua autenticação.</span></td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-red-500 font-bold">Acesso Negado.<br><span class="text-xs font-normal text-slate-500">Sessão expirada. Faça login novamente.</span></td></tr>`;
                 }
             });
         }
